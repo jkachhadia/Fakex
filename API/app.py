@@ -3,13 +3,18 @@ import os
 import sys
 import requests
 import json
-from flask import Flask,request
+from flask import Flask,request,jsonify
 
 app=Flask(__name__)
 
 @app.route('/api/<query>', methods=['GET','POST'])
 def fknscore(query):
-    return "ok", 200
+
+    return jsonify({
+        'query': query,
+        'keywords': keywords,
+        'score':score,
+    })
 
 
 
