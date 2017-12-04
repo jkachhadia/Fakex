@@ -5,13 +5,12 @@ import time
 import json
 from requests.exceptions import HTTPError
 
+
 searchQuery = sys.argv[1]
-searchQuery = searchQuery.replace(" ", "-")
-baseUri = "https://timesofindia.indiatimes.com/topic/"
+searchQuery = searchQuery.replace(" ", "+")
+baseUri = "http://indianexpress.com/?s="
 
-url = baseUri+searchQuery+"-news/news"
-
-print url
+url = baseUri+searchQuery
 
 try:
   result = requests.get(url, verify=True)
@@ -23,14 +22,13 @@ except HTTPError:
 else:
   soup = BeautifulSoup(result.content, 'html.parser')
   aTags = soup.select('div.content > a')
+  aTags = soup.select('div.search-result > div.details > div.picture > a')
   links = []
 
   for aTag in aTags:
-    links.append(url+aTag['href'])
+    links.append(aTag['href'])
 
-  #print links 
-
-  outFile = open("dumps/articlesTOI.json","w")
+  outFile = open("dumps/articlesIE.json","w")
   articles = []
 
   for link in links:
@@ -44,16 +42,23 @@ else:
 
     else:
       soup = BeautifulSoup(articlePage.content, 'html.parser')
-      if(soup.select_one('div.main-content > section > h1').text and soup.select_one('arttextxml').text):
-        article['title'] = soup.select_one('div.main-content > section > h1').text
-        article['content'] = soup.select_one('arttextxml').text
+      if(soup.select_one('div.heading-part > h1').text and soup.select('div[class="full-details"] > p')):
+        article['title'] = soup.select_one('div.heading-part > h1').text
+        
+        paragraphs = soup.select('div[class="full-details"] > p')
+        paragraphs = paragraphs[:-1]
+
+        content = ""
+        for paragraph in paragraphs:
+           content += paragraph.text
+
+        article['content'] = content
+
         articles.append(article)
         print article
       
       else:
       	continue
-      #time.sleep(1)
-
 
 print articles
 json.dump(articles,outFile)
