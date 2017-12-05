@@ -1,4 +1,4 @@
-const url = 'http://fakex.herokuapp.com/api/';
+const url = 'https://fakex.herokuapp.com/api/';
 
 const scoreColors = {
   fake: '#FF9800',
