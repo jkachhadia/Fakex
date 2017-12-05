@@ -44,7 +44,7 @@ const computeColorFromScore = (score) => {
     return scoreColors.ambiguous;
   } else if (score > scoreThresholds.ambiguous && score < scoreThresholds.partiallyVerified) {
     console.log('Partially Verified');
-    return scoreThresholds.partiallyVerified;
+    return scoreColors.partiallyVerified;
   } else if (score > scoreThresholds.partiallyVerified && score < scoreThresholds.verified) {
     console.log('Verified');
     return scoreColors.verified;
