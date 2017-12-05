@@ -1,4 +1,4 @@
-const url = 'http://127.0.0.1:5000/api/';
+const url = 'http://fakex.herokuapp.com/api/';
 
 const scoreColors = {
   fake: '#FF9800',
