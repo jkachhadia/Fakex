@@ -24,10 +24,8 @@ def fknscore(query):
     #TOI
     print resp
     search=""
-    for a in resp[0:2]:
-        a=a[0].split()
-        for b in a:
-            search=search+str(b)+"-"
+    for a in resp[0:4]:
+        search=search+str(a)+" "
     print search
     # baseUri = "https://timesofindia.indiatimes.com/topic/"
     # url = baseUri+search+"/news"
@@ -45,13 +43,19 @@ def fknscore(query):
                                       language='en',
                                       sort_by='relevancy',
                                       page=1)
+    print all_articles
+
     headings = []
-    for title in titles:
-        headings.append(title.contents[0].encode("utf-8")[1:-1])
-    print headings
+    for article in all_articles['articles']:
+        headings.append(article['title'])
+    # for title in titles:
+    #     headings.append(title.contents[0].encode("utf-8")[1:-1])
+    # print headings
     relevances={}
     for heads in headings[0:4]:
-        ans=indicoio.relevance(query, heads)
+        print query
+        print heads
+        ans=indicoio.relevance(query, [heads])
         print ans
         relevances.update({heads:float(ans[0])})
     #resp=json.dumps(ans)
@@ -65,9 +69,14 @@ def fknscore(query):
     sentivar=abs(float(sentiment[1])-float(sentiment[0]))
     print relhead
     print sentivar
+    classifier=pickle.load(open('pacmodel.pkl', 'rb'))
+    vectorizer=pickle.load(open('vectorizer.pkl', 'rb'))
+    vectors=vectorizer.transform([relhead])
+    prediction=classifier.predict(vectors)
+    print prediction
     return jsonify({
         'query': query,
-        'score':(score*.7)+.3*(1-sentivar)
+        'score':(0.3-float(prediction[0])*0.3)+(score*.49)+.21*(1-sentivar)
     })
 
 def log(message):  # simple wrapper for logging to stdout on heroku
