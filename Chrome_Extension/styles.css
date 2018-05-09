@@ -1,0 +1,21 @@
+.fakex-target {
+  position: realtive;
+}
+
+.fakex-target:hover > .fakex-score-container {
+  opacity: 0.1;
+}
+
+.fakex-score-container {
+  padding: 5px;
+  font-size: 1em;
+  color: '#303030';
+  position: absolute;
+  padding: 0.5em;
+  background-color: black;
+  top: 2px;
+  left: 2px;
+  z-index: 9999;
+  border: 2px solid black;
+  transition: all 0.3s;
+}
