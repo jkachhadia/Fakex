@@ -10,7 +10,7 @@ Flask-Script==0.6.6
 Flask-WTF==0.9.4
 IndicoIo==1.1.1
 Jinja2==2.7.1
-Mako==0.9.1
+Mako==1.2.2
 MarkupSafe==0.18
 Pillow==4.3.0
 SQLAlchemy==0.9.9
